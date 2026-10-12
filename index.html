@@ -921,6 +921,34 @@
     transition:background .3s var(--ease), transform .4s var(--ease-out); }
   .mail-menu a:hover, .mail-menu button:hover, .mail-menu a:focus-visible, .mail-menu button:focus-visible{ background:rgba(143,191,110,.22); transform:translateX(3px); }
   .mail-menu small{ color:var(--ink-soft); font-size:.78rem; }
+
+  /* project screenshots and viewer */
+  .orb.photo .orb-img::after{ opacity:.78; background:linear-gradient(180deg, rgba(10,16,9,0) 28%, rgba(10,16,9,.86) 100%), radial-gradient(circle at 28% 18%, var(--tint) 0%, rgba(0,0,0,0) 68%); }
+  .orb.photo:hover .orb-img::after{ opacity:.55; }
+  .orb.photo .orb-txt{ justify-content:flex-end; padding:0 10% 15%; }
+  .orb.photo .orb-txt b{ text-shadow:0 2px 14px rgba(0,0,0,.55); }
+  .orb.photo .orb-txt i{ color:rgba(255,255,255,.85); }
+  .arc-shots{ display:grid; grid-template-columns:repeat(auto-fit,minmax(96px,1fr)); gap:10px; margin:6px 0 18px; }
+  .arc-shot{ position:relative; display:block; padding:0; border:1px solid rgba(255,255,255,.16); border-radius:14px; overflow:hidden; aspect-ratio:16/10; background:#1c241a; cursor:zoom-in;
+    transition:border-color .4s var(--ease), transform .5s var(--ease-out), box-shadow .6s var(--ease); }
+  .arc-shot img{ width:100%; height:100%; object-fit:cover; display:block; transform:scale(1.02); transition:transform 1s var(--ease-out), filter .6s var(--ease); }
+  .arc-shot:hover, .arc-shot:focus-visible{ border-color:rgba(255,255,255,.55); transform:translateY(-3px); box-shadow:0 14px 34px rgba(10,14,8,.5); outline:none; }
+  .arc-shot:hover img{ transform:scale(1.14); filter:saturate(1.12); }
+  #lb{ position:fixed; inset:0; z-index:60; display:flex; align-items:center; justify-content:center; padding:24px; background:rgba(9,14,8,.92);
+    opacity:0; visibility:hidden; transition:opacity .4s var(--ease), visibility 0s linear .4s; }
+  #lb.open{ opacity:1; visibility:visible; transition-delay:0s; }
+  #lb figure{ margin:0; max-width:min(1100px,92vw); }
+  #lb img{ display:block; max-width:100%; max-height:76vh; margin:0 auto; border-radius:22px; border:1px solid rgba(255,255,255,.18); box-shadow:0 40px 100px rgba(0,0,0,.6); }
+  #lb figcaption{ margin-top:14px; text-align:center; color:var(--ink-soft); font-size:.95rem; }
+  #lb button{ position:absolute; display:grid; place-items:center; width:52px; height:52px; padding:0; border-radius:50%; border:1px solid rgba(255,255,255,.2);
+    background:rgba(34,40,31,.82); color:var(--ink); cursor:pointer; transition:background .3s var(--ease), transform .4s var(--ease-out); }
+  #lb button:hover, #lb button:focus-visible{ background:rgba(143,191,110,.38); transform:scale(1.08); outline:none; }
+  #lb button svg{ width:20px; height:20px; }
+  #lb .lb-x{ top:calc(22px + env(safe-area-inset-top,0px)); right:22px; }
+  #lb .lb-p{ left:22px; top:50%; margin-top:-26px; }
+  #lb .lb-n{ right:22px; top:50%; margin-top:-26px; }
+  @media (max-width:700px){ #lb .lb-p, #lb .lb-n{ top:auto; bottom:22px; margin-top:0; } }
+  @media (prefers-reduced-motion:reduce){ .arc-shot, .arc-shot img{ transition:none; } }
 </style>
 </head>
 <body>
@@ -4623,32 +4651,40 @@ window.__seek   = v => { clock = v; drawn = null; };
 
 <script>
 (function(){
+  var IMG={"game-1-start": "images/game-1-start.webp", "game-2-leap": "images/game-2-leap.webp", "game-3-discs": "images/game-3-discs.webp", "game-4-victory": "images/game-4-victory.webp", "game-cover": "images/game-cover.webp", "geosass-1-result": "images/geosass-1-result.webp", "geosass-2-upload": "images/geosass-2-upload.webp", "geosass-cover": "images/geosass-cover.webp", "lingolive-1-chat": "images/lingolive-1-chat.webp", "lingolive-2-academy": "images/lingolive-2-academy.webp", "lingolive-3-dashboard": "images/lingolive-3-dashboard.webp", "lingolive-cover": "images/lingolive-cover.webp", "novanexus-1-home": "images/novanexus-1-home.webp", "novanexus-2-solar": "images/novanexus-2-solar.webp", "novanexus-3-radar": "images/novanexus-3-radar.webp", "novanexus-4-codex": "images/novanexus-4-codex.webp", "novanexus-cover": "images/novanexus-cover.webp"};
   var data=[
-   {n:'NovaNexus',s:'Space explorer',img:'ethos',pos:'50% 30%',tint:'#3f6b3a',
-    d:'I am hopelessly curious about space and cosmology, so I built the corner of the internet I wanted to live in. Spin 3D planets and other celestial bodies, watch near-earth objects whizz past on live NASA data (they sound scary, but you will still sleep fine), and tumble down a rabbit hole of cosmic facts in the knowledge base. It started life as an Unreal Engine asteroid simulation. So, my dear space lovers, please come have a look, and bookmark your favourites while you are there.',
-    t:['React','TypeScript','Vite','Three.js','Tailwind CSS','Supabase','NASA API'],l:[['Live site','https://novanexus-space.vercel.app'],['Code','https://github.com/Gmanjot4321/novanexus-space']]},
-   {n:'GeoSass',s:'Photo geolocation',img:'stove',pos:'50% 60%',tint:'#8a7a2f',
-    d:'I love watching OSINT creators track down where a photo was taken from tiny clues, so I built my own version. Upload any photo and it makes its best guess at where in the world it was taken, then explains its reasoning in a sarcastic voiceover that is far too confident about everything. It reads what is actually in the picture, so a street, a living room and a forest each get different clues. The hidden location data is stripped from the photo first, so it has to earn its guess.',
-    t:['React','Express','Gemini','Leaflet'],l:[['Live site','https://geosass-ai.onrender.com'],['Code','https://github.com/Gmanjot4321/geosass-ai']]},
-   {n:'LingoLive AI',s:'Language tutor',img:'ethos',pos:'30% 70%',tint:'#2f6b62',
-    d:'Speaking a new language is much easier when your practice partner never sighs at your accent. LingoLive is a tutor you can talk to out loud, live, in nine languages, with levels from total beginner to confident (A0 to C1), practice for speaking, listening, reading, writing and pronunciation, and streaks to keep you honest. French is near the top of my own list, so this one is personal.',
-    t:['React','Express','Gemini','Supabase'],l:[['Live site','https://lingolive-ai.onrender.com'],['Code','https://github.com/Gmanjot4321/lingolive-ai']]},
-   {n:'TransLink Tracker',s:'Bus reliability',img:'stove',pos:'30% 40%',tint:'#4d5f7a',
+   {n:'NovaNexus',s:'Space explorer',cover:'novanexus-cover',tint:'#3f6b3a',
+    d:'I am hopelessly curious about space and cosmology, so I built the corner of the internet I wanted to live in. NovaNexus packs eight interactive labs into one app: a 3D solar system, a relativity and time travel lab, a NASA telemetry hub, a live near-earth object radar (they sound scary, but you will still sleep fine) and a codex of narrated guides with quizzes. It started life as an Unreal Engine asteroid simulation. So, my dear space lovers, please come have a look.',
+    t:['React','TypeScript','Vite','Three.js','Tailwind CSS','Supabase','NASA API'],
+    l:[['Live site','https://novanexus-space.vercel.app'],['Code','https://github.com/Gmanjot4321/novanexus-space']],
+    shots:[['novanexus-1-home','Eight interactive labs on the NovaNexus home screen'],['novanexus-2-solar','Solar System 3D with 23 bodies to explore'],['novanexus-3-radar','Near-earth object radar fed by live NASA data'],['novanexus-4-codex','Galactic Codex with narrated guides and quizzes']]},
+   {n:'GeoSass',s:'Photo geolocation',cover:'geosass-cover',tint:'#8a7a2f',
+    d:'I love watching OSINT creators track down where a photo was taken from tiny clues, so I built my own version. Upload any photo and it makes its best guess at where in the world it was taken, pins the clues it spotted right on the picture, and drops a marker on a satellite map with coordinates and a confidence score. You can even argue with it by voice or text, while a sarcastic voiceover stays far too confident about everything. The hidden location data is stripped from the photo first, so it has to earn its guess.',
+    t:['React','Express','Gemini','Leaflet'],
+    l:[['Live site','https://geosass-ai.onrender.com'],['Code','https://github.com/Gmanjot4321/geosass-ai']],
+    shots:[['geosass-1-result','Clues pinned on the photo, with a satellite map lock'],['geosass-2-upload','Drop in any photo, or snap one with the camera']]},
+   {n:'LingoLive AI',s:'Language tutor',cover:'lingolive-cover',tint:'#2f6b62',
+    d:'Speaking a new language is much easier when your practice partner never sighs at your accent. LingoLive pairs you with an AI partner you can talk to out loud or by chat, in nine languages, with levels from total beginner to confident (A0 to C1). There is also an Academy with a reading studio, phonetics and mock exams, plus a dashboard that tracks your speaking, listening, reading and writing. French is near the top of my own list, so this one is personal.',
+    t:['React','Express','Gemini','Supabase'],
+    l:[['Live site','https://lingolive-ai.onrender.com'],['Code','https://github.com/Gmanjot4321/lingolive-ai']],
+    shots:[['lingolive-1-chat','Chatting with an AI Spanish partner, with practice goals'],['lingolive-2-academy','Reading studio with comprehension checks'],['lingolive-3-dashboard','Learner dashboard with CEFR skill balance']]},
+   {n:'TransLink Tracker',s:'Bus reliability',img:'stove',tint:'#4d5f7a',
     d:'Every Vancouver commuter has a bus story, so I wanted numbers instead of vibes. This tracker pulls live data from TransLink and measures how early or late buses really run. After about five million readings on my first four routes, buses ran slightly early more often than late, especially in the afternoon, so yes, the bus might leave without you. I am now scaling it up to all 239 routes, and a live map and a trip planner are next.',
     t:['Python','GitHub Actions','GTFS-RT','Turso'],l:[]},
-   {n:'Obstacle Game',s:'Unreal Engine 5',img:'ethos',pos:'80% 30%',tint:'#8a5a2f',
-    d:'Think Fall Guys, except I built the obstacles and they are not sorry. This is a third-person obstacle course in Unreal Engine 5 with an Egyptian setting, where platforms slide and spin (and soon rise out of the ground) while you try not to fall. Fall anyway and the level resets, which is great practice for patience. A countdown, a running timer and a finish time are on the way.',
-    t:['Unreal Engine 5','C++'],l:[]}
+   {n:'Pharaoh\u2019s Gauntlet',s:'Unreal Engine 5',cover:'game-cover',tint:'#8a5a2f',
+    d:'Think Fall Guys in a stylized Egyptian desert, except I built the obstacles and they are not sorry. A hooded warrior races across moving platforms and stone discs while a timer runs, with a 3, 2, 1 countdown at the start and a victory screen with your total time at the end. Fall off and the level resets, which is great practice for patience.',
+    t:['Unreal Engine 5','C++','Blueprints'],l:[],
+    shots:[['game-1-start','The countdown ends and the run begins'],['game-2-leap','Mid-leap between moving platforms'],['game-3-discs','Stone discs floating over the sand'],['game-4-victory','Victory screen with your total time']]}
   ];
   var arc=document.getElementById('arc'), det=document.getElementById('arcDet'), line=document.getElementById('arcLine');
-  var src={ethos:document.querySelector('.card--about img').src, stove:document.querySelector('.card--stove img').src};
+  var moss={ethos:document.querySelector('.card--about img').src, stove:document.querySelector('.card--stove img').src};
   var poss=[], orbs=[], cur=0;
   data.forEach(function(p,i){
     var pos=document.createElement('div'); pos.className='orb-pos';
-    var b=document.createElement('button'); b.className='orb'; b.type='button'; b.style.setProperty('--tint',p.tint); b.style.setProperty('--d',(700+i*130)+'ms');
+    var b=document.createElement('button'); b.className='orb'+(p.cover?' photo':''); b.type='button'; b.style.setProperty('--tint',p.tint); b.style.setProperty('--d',(700+i*130)+'ms');
     b.setAttribute('aria-label',p.n+': '+p.s);
-    b.innerHTML='<span class="orb-img"><img alt=""></span><span class="orb-glow"></span><span class="orb-txt"><b></b><i></i></span>';
-    var im=b.querySelector('img'); im.src=src[p.img]; im.style.objectPosition=p.pos;
+    b.innerHTML='<span class="orb-img"><img alt="" loading="lazy"></span><span class="orb-glow"></span><span class="orb-txt"><b></b><i></i></span>';
+    var im=b.querySelector('img'); im.src=p.cover?IMG[p.cover]:moss[p.img];
     b.querySelector('b').textContent=p.n; b.querySelector('i').textContent=p.s;
     b.addEventListener('pointerenter',function(e){ if(e.pointerType==='mouse') select(i); });
     b.addEventListener('focus',function(){ select(i); });
@@ -4656,12 +4692,38 @@ window.__seek   = v => { clock = v; drawn = null; };
     b.addEventListener('pointermove',function(e){ var r=b.getBoundingClientRect(); b.style.setProperty('--mx',((e.clientX-r.left)/r.width*100)+'%'); b.style.setProperty('--my',((e.clientY-r.top)/r.height*100)+'%'); });
     pos.appendChild(b); arc.appendChild(pos); poss.push(pos); orbs.push(b);
   });
+  /* lightbox */
+  var X='<svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.6" stroke-linecap="round"><path d="M6 6l12 12M18 6L6 18"/></svg>';
+  var PV='<svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.6" stroke-linecap="round" stroke-linejoin="round"><path d="M14 6l-6 6 6 6"/></svg>';
+  var NX='<svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.6" stroke-linecap="round" stroke-linejoin="round"><path d="M10 6l6 6-6 6"/></svg>';
+  var lb=document.createElement('div'); lb.id='lb'; lb.setAttribute('role','dialog'); lb.setAttribute('aria-label','Screenshot viewer');
+  lb.innerHTML='<button class="lb-x" type="button" aria-label="Close">'+X+'</button><button class="lb-p" type="button" aria-label="Previous">'+PV+'</button><figure><img alt=""><figcaption></figcaption></figure><button class="lb-n" type="button" aria-label="Next">'+NX+'</button>';
+  document.body.appendChild(lb);
+  var lbImg=lb.querySelector('img'), lbCap=lb.querySelector('figcaption'), lbI=0;
+  function show(i){ var s=data[cur].shots; lbI=(i+s.length)%s.length; lbImg.src=IMG[s[lbI][0]]; lbImg.alt=s[lbI][1]; lbCap.textContent=s[lbI][1];
+    lb.querySelector('.lb-p').style.display=lb.querySelector('.lb-n').style.display=s.length>1?'':'none'; }
+  function openLb(i){ show(i); lb.classList.add('open'); lb.querySelector('.lb-x').focus(); }
+  function closeLb(){ lb.classList.remove('open'); }
+  lb.addEventListener('click',function(e){ if(e.target===lb||e.target.closest('.lb-x')) closeLb(); });
+  lb.querySelector('.lb-p').addEventListener('click',function(){ show(lbI-1); });
+  lb.querySelector('.lb-n').addEventListener('click',function(){ show(lbI+1); });
+  document.addEventListener('keydown',function(e){ if(!lb.classList.contains('open')) return;
+    if(e.key==='Escape') closeLb(); else if(e.key==='ArrowLeft') show(lbI-1); else if(e.key==='ArrowRight') show(lbI+1); });
   function render(){
     var p=data[cur]; det.innerHTML='';
     var h=document.createElement('h3'); h.textContent=p.n; det.appendChild(h);
     var d=document.createElement('p'); d.textContent=p.d; det.appendChild(d);
     var ul=document.createElement('ul'); ul.className='s-tags';
     p.t.forEach(function(t){ var li=document.createElement('li'); li.textContent=t; ul.appendChild(li); }); det.appendChild(ul);
+    if(p.shots&&p.shots.length){
+      var g=document.createElement('div'); g.className='arc-shots';
+      p.shots.forEach(function(s,i){
+        var bt=document.createElement('button'); bt.type='button'; bt.className='arc-shot'; bt.setAttribute('aria-label','View screenshot: '+s[1]);
+        var im=document.createElement('img'); im.loading='lazy'; im.alt=s[1]; im.src=IMG[s[0]]; bt.appendChild(im);
+        bt.addEventListener('click',function(){ openLb(i); }); g.appendChild(bt);
+      });
+      det.appendChild(g);
+    }
     if(p.l.length){ var row=document.createElement('div');
       p.l.forEach(function(l){ var a=document.createElement('a'); a.className='s-chip'; a.href=l[1]; a.target='_blank'; a.rel='noopener'; a.textContent=l[0]; row.appendChild(a); });
       det.appendChild(row); }
@@ -4681,14 +4743,13 @@ window.__seek   = v => { clock = v; drawn = null; };
     line.style.left=(cx-R)+'px'; line.style.top=(cy-R)+'px'; line.style.width=(2*R)+'px'; line.style.height=(2*R)+'px';
     arc.style.setProperty('--fs',Math.max(11,Math.min(19,d*.115))+'px'); arc.style.setProperty('--fs2',Math.max(9,Math.min(12.5,d*.074))+'px');
     var Ha=cy+d/2+8; arc.style.height=Ha+'px';
-    if(W>=720){ var pw=Math.min(500,2*(R-d/2)-40); det.style.width=pw+'px'; det.style.marginTop=((cy-.35*R)-Ha)+'px'; }
+    if(W>=720){ var pw=Math.min(520,2*(R-d/2)-40); det.style.width=pw+'px'; det.style.marginTop=((cy-.35*R)-Ha)+'px'; }
     else { det.style.width='auto'; det.style.marginTop='20px'; }
   }
   select(0);
   function go(){ requestAnimationFrame(layout); }
   addEventListener('resize',go); addEventListener('hashchange',function(){ if(location.hash==='#projects') go(); });
   if(location.hash==='#projects') go();
-  /* links open in a new tab */
   document.querySelectorAll('#pages a[href^="http"]').forEach(function(a){ a.target='_blank'; a.rel='noopener'; });
 })();
 </script>
